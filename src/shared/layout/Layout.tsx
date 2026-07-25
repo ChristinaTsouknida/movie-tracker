@@ -1,15 +1,16 @@
 import Header from './Header'
 import Footer from './Footer'
-import type {LayoutProps} from "../types.ts";
+import {Outlet} from "react-router";
 
 
-const Layout = ({children, addClasses}: LayoutProps)=> {
+const Layout = () => {
 
   return (
       <>
-        <div className={`flex flex-col h-screen ${addClasses}`}>
+        <div className="flex flex-col h-screen bg-mt-black"
+             style={{backgroundImage: "url('/login-bg.jpg')", backgroundSize: "cover", backgroundPosition: "center"}}>
           <Header/>
-          <main className="flex-1 overflow-auto container mx-auto">{children}</main>
+          <main className="flex-1 overflow-auto container mx-auto flex items-center justify-center"><Outlet/></main>
           <Footer/>
         </div>
       </>
