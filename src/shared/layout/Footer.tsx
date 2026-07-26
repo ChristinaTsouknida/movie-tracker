@@ -4,7 +4,7 @@ const Footer = () => {
 
   return (
       <>
-        <footer className="bg-mt-dark-gray text-white">
+        <footer className="bg-mt-dark-gray text-white relative z-20">
           <div className="container mx-auto py-8 text-center">
             &copy; {currentYear} Movie Tracker. All rights reserved.
           </div>
