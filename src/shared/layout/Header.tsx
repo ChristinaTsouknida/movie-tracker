@@ -1,15 +1,14 @@
+import { Link } from 'react-router';
 
 const Header = () => {
   return (
       <>
         <header className="bg-mt-dark-gray fixed w-full py-4">
           <div className="container mx-auto px-4 flex items-center justify-between">
-            <a href="/" className="text-white font-bold text-lg">
-              Movie Tracker
-            </a>
+            <Link to="/" className="text-white font-bold text-lg">Movie Tracker</Link>
             <nav className="flex gap-4 text-white font-medium">
-              <a href="/home">Home</a>
-              <a href="/mylist">My List</a>
+              <Link to="/home">Home</Link>
+              <Link to="/my-list">My List</Link>
             </nav>
           </div>
         </header>
