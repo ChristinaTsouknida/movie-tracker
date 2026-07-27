@@ -13,7 +13,7 @@ const HomePage = () => {
               backgroundPosition: "center"
             }}
         />
-        <div className="relative z-0 grid grid-cols-5 gap-3">
+        <div className="relative z-0 grid grid-cols-5 gap-8">
           {mockMovies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
           ))}
