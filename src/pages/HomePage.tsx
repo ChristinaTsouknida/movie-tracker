@@ -8,6 +8,8 @@ const HomePage = () => {
 
   const [searchTitle, setSearchTitle] = useState("");
 
+  const filteredMovies = mockMovies.filter((movie) => movie.title.toLowerCase().includes(searchTitle.toLowerCase()));
+
   return (
       <>
         <div
@@ -30,7 +32,7 @@ const HomePage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white" size={18} />
           </div>
           <div className="grid grid-cols-8 gap-8">
-            {mockMovies.map((movie) => (
+            {filteredMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
