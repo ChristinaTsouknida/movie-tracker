@@ -21,7 +21,7 @@ const HomePage = () => {
             }}
         />
         <div className="relative z-10 flex flex-col items-center w-full self-start mt-20">
-          <div className="relative">
+          <div className="relative mb-12">
             <input
                 type="text"
                 value={searchTitle}
