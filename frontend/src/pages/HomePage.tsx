@@ -1,14 +1,25 @@
-import {mockMovies} from "../mockData.ts";
+// import {mockMovies} from "../mockData.ts";
 import MovieCard from "../components/MovieCard";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Search} from 'lucide-react'
+import type {Movie} from "../shared/types.ts";
 
 
 const HomePage = () => {
 
   const [searchTitle, setSearchTitle] = useState("");
+  const [movies, setMovies] = useState<Movie[]>([]);
 
-  const filteredMovies = mockMovies.filter((movie) => movie.title.toLowerCase().includes(searchTitle.toLowerCase()));
+  const filteredMovies = movies.filter((movie) => movie.title.toLowerCase().includes(searchTitle.toLowerCase()));
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/movies")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setMovies(data);
+        });
+  }, []);
 
   return (
       <>
