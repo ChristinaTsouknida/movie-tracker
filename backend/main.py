@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from app.core.database import engine, Base
+from app.models.movie import Movie as MovieModel
 
 class Movie(BaseModel):
     id: int
@@ -10,6 +12,8 @@ class Movie(BaseModel):
     posterUrl: str
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
