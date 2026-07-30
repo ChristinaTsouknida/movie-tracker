@@ -9,3 +9,6 @@ class Movie(Base):
     year = Column(Integer)
     category = Column(String(100))
     poster_url = Column(String(500))
+
+
+new_movie = Movie(title="Superman", year=2015, category="Action", poster_url="")
