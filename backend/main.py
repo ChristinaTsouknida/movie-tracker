@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.repositories.movie_repository import get_all_movies
 from typing import List, Optional
-from app.services.tmdb_service import search_movies
+from app.services.tmdb_service import search_movies as search_movie_service
+from app.services.movie_service import create_movie as create_movie_service
 
 class Movie(BaseModel):
     id: int
@@ -15,6 +16,12 @@ class Movie(BaseModel):
     year: int
     category: str
     posterUrl: str = Field(validation_alias="poster_url")
+
+class MovieCreate(BaseModel):
+    title: str
+    year: int
+    category: str
+    posterUrl: str
 
 class TMDBSearchResult(BaseModel):
     tmdb_id: int = Field(validation_alias="id")
@@ -58,5 +65,9 @@ def read_movies(db: Session = Depends(get_db)):
 
 
 @app.get("/movies/search", response_model=List[TMDBSearchResult])
-def search_movies_endpoint(query: str):
-    return search_movies(query)
+def search_movies(query: str):
+    return search_movie_service(query)
+
+@app.post("/movies", response_model=Movie)
+def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
+    return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
