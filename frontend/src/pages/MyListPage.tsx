@@ -1,12 +1,17 @@
 import {mockMovies} from "../mockData.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import {MonitorPlay, SquareCheckBig} from 'lucide-react'
+import {useEffect} from 'react'
 
 
 const MyListPage = ()=> {
 
   const watchListMovies = mockMovies.filter((movie) => movie.id % 2 === 0)
   const watchedMovies = mockMovies.filter((movie) => movie.id % 2 !== 0)
+
+  useEffect(() => {
+    document.title = "My List";
+  }, [])
 
   return (
       <>

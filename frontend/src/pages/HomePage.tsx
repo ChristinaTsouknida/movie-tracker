@@ -21,6 +21,10 @@ const HomePage = () => {
         });
   }, []);
 
+  useEffect(() => {
+    document.title = "Home Page";
+  }, [])
+
   return (
       <>
         <div

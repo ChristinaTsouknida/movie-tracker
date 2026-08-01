@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Mail, EyeOff, Eye} from 'lucide-react';
 import { Link } from "react-router";
-import { useState } from "react";
+import {useState, useEffect} from "react";
 
 
 const formSchema = z.object({
@@ -31,6 +31,10 @@ const LoginPage = () => {
   }
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    document.title = "Login Page";
+  }, [])
 
   return (
       <>

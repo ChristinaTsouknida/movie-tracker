@@ -2,7 +2,7 @@ import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Link} from "react-router";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Eye, EyeOff} from "lucide-react";
 
 
@@ -42,6 +42,10 @@ const RegisterPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    document.title = "Register Page";
+  }, [])
 
 
   return (
