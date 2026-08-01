@@ -10,6 +10,7 @@ from typing import List, Optional
 from app.services.tmdb_service import search_movies as search_movie_service
 from app.services.movie_service import create_movie as create_movie_service
 from app.models.user import User as UserModel
+from app.services.user_service import register_user as register_user_service
 
 class Movie(BaseModel):
     id: int
@@ -43,6 +44,17 @@ class TMDBSearchResult(BaseModel):
         else:
             return "https://image.tmdb.org/t/p/w500" + value
 
+
+class UserRegister(BaseModel):
+    full_name: str
+    email: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    full_name: str
+    email: str
+
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
@@ -72,3 +84,7 @@ def search_movies(query: str):
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
     return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
+
+@app.post("/register", response_model=UserResponse)
+def register_user(user: UserRegister, db: Session = Depends(get_db)):
+    return register_user_service(db, user.full_name, user.email, user.password)
