@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import engine, Base
 from app.models.movie import Movie as MovieModel
@@ -9,7 +9,7 @@ from typing import List, Optional
 from app.services.tmdb_service import search_movies as search_movie_service
 from app.services.movie_service import create_movie as create_movie_service
 from app.models.user import User as UserModel
-from app.services.user_service import register_user as register_user_service
+from app.services.user_service import register_user as register_user_service, login_user as login_user_service
 from app.schemas.movie_schema import Movie, MovieCreate, TMDBSearchResult
 from app.schemas.user_schema import UserRegister, UserResponse, UserLogin
 
@@ -29,11 +29,9 @@ app.add_middleware(
 def read_root():
     return {"message": "Movie Tracker API is running"}
 
-
 @app.get("/movies", response_model=List[Movie])
 def read_movies(db: Session = Depends(get_db)):
     return get_all_movies(db)
-
 
 @app.get("/movies/search", response_model=List[TMDBSearchResult])
 def search_movies(query: str):
@@ -46,3 +44,10 @@ def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
 @app.post("/register", response_model=UserResponse)
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
     return register_user_service(db, user.full_name, user.email, user.password)
+
+@app.post("/login", response_model=UserResponse)
+def login_user(user: UserLogin, db: Session = Depends(get_db)):
+    try:
+        return login_user_service(db, user.email, user.password)
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
