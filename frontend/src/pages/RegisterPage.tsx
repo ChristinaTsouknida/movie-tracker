@@ -7,9 +7,8 @@ import {Eye, EyeOff} from "lucide-react";
 
 
 const formSchema = z.object({
-  username: z.string().trim().min(6, {error: "Username must be at least 6 characters"}),
+  email: z.email({error: "Invalid email address"}),
   password: z.string().trim().min(5, {error: "Password must be at least 5 characters"}),
-  email: z.email().trim().min(6, {error: "Email must be at least 6 characters"}),
   name: z.string().min(8, {error: "Full name must be at least 8 characters"}),
   confirmPassword: z.string().min(0, {error: "Passwords do not match"}),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -30,9 +29,8 @@ const RegisterPage = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      password: "",
       email: "",
+      password: "",
       name: "",
       confirmPassword: ""
     }
@@ -69,18 +67,6 @@ const RegisterPage = () => {
               />
               {errors.name && (
                   <p className="text-mt-red text-sm mt-1">{errors.name.message}</p>
-              )}
-            </div>
-            <div className="relative">
-              <label className="text-white text-sm mb-1 block">Username</label>
-              <input
-                  {...register("username")}
-                  type="text"
-                  placeholder="Enter a username..."
-                  className="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base"
-              />
-              {errors.username && (
-                  <p className="text-mt-red text-sm mt-1">{errors.username.message}</p>
               )}
             </div>
             <div className="relative">
