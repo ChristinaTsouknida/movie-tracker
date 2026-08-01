@@ -1,13 +1,13 @@
 import {z} from 'zod';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {User, EyeOff, Eye} from 'lucide-react';
+import {Mail, EyeOff, Eye} from 'lucide-react';
 import { Link } from "react-router";
 import { useState } from "react";
 
 
 const formSchema = z.object({
-  username: z.string().trim().min(6, {error: "Username is required"}),
+  email: z.email({error: "Invalid email address"}),
   password: z.string().trim().min(5, {error: "Password is required"})
 })
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: ""
     }
   });
@@ -47,14 +47,14 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="relative">
               <input
-                  {...register("username")}
-                  type="text"
-                  placeholder="Username"
+                  {...register("email")}
+                  type="email"
+                  placeholder="Email"
                   className="w-full border rounded-full px-4 py-2.5 bg-transparent text-white text-base pr-10"
               />
-              <User className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray" size={18} />
-              {errors.username && (
-                  <p className="text-mt-red text-sm mt-1">{errors.username.message}</p>
+              <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray" size={18} />
+              {errors.email && (
+                  <p className="text-mt-red text-sm mt-1">{errors.email.message}</p>
               )}
             </div>
             <div className="relative">
