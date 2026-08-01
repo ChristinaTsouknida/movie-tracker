@@ -43,7 +43,10 @@ def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
 
 @app.post("/register", response_model=UserResponse)
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
-    return register_user_service(db, user.full_name, user.email, user.password)
+    try:
+        return register_user_service(db, user.full_name, user.email, user.password)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/login", response_model=UserResponse)
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
