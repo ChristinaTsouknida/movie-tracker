@@ -9,6 +9,7 @@ from app.repositories.movie_repository import get_all_movies
 from typing import List, Optional
 from app.services.tmdb_service import search_movies as search_movie_service
 from app.services.movie_service import create_movie as create_movie_service
+from app.models.user import User as UserModel
 
 class Movie(BaseModel):
     id: int
