@@ -11,7 +11,8 @@ from app.services.movie_service import create_movie as create_movie_service
 from app.models.user import User as UserModel
 from app.services.user_service import register_user as register_user_service, login_user as login_user_service
 from app.schemas.movie_schema import Movie, MovieCreate, TMDBSearchResult
-from app.schemas.user_schema import UserRegister, UserResponse, UserLogin
+from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
+from app.core.security import create_access_token
 
 app = FastAPI()
 
@@ -48,9 +49,14 @@ def register_user(user: UserRegister, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.post("/login", response_model=UserResponse)
+@app.post("/login", response_model=Token)
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
     try:
-        return login_user_service(db, user.email, user.password)
+        logged_in_user = login_user_service(db, user.email, user.password)
+        token = create_access_token(logged_in_user.email)
+        return {
+            "access_token": token,
+            "token_type": "bearer"
+        }
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
