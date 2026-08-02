@@ -15,6 +15,8 @@ from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
+from app.schemas.user_movie_schema import UserMovieCreate, UserMovie
+from app.services.user_movie_service import add_to_list as add_to_list_service
 
 app = FastAPI()
 
@@ -43,6 +45,11 @@ def search_movies(query: str):
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
+
+
+@app.post("/list", response_model=UserMovie)
+def add_to_my_list(user_movie: UserMovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return add_to_list_service(db, current_user.id, user_movie.movie_id, user_movie.status)
 
 @app.post("/register", response_model=UserResponse)
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
