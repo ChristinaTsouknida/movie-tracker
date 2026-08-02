@@ -14,6 +14,7 @@ from app.schemas.movie_schema import Movie, MovieCreate, TMDBSearchResult
 from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
+from app.models.user_movie import UserMovie as UserMovieModel
 
 app = FastAPI()
 
