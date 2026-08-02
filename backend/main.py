@@ -13,6 +13,7 @@ from app.services.user_service import register_user as register_user_service, lo
 from app.schemas.movie_schema import Movie, MovieCreate, TMDBSearchResult
 from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
+from app.core.deps import get_current_user
 
 app = FastAPI()
 
@@ -39,7 +40,7 @@ def search_movies(query: str):
     return search_movie_service(query)
 
 @app.post("/movies", response_model=Movie)
-def create_movie(movie: MovieCreate, db: Session = Depends(get_db)):
+def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
 
 @app.post("/register", response_model=UserResponse)
