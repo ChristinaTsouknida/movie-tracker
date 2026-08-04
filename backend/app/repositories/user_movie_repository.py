@@ -9,3 +9,7 @@ def create_user_movie(db, user_id, movie_id, status):
 
 def get_user_movies(db, user_id):
     return db.query(UserMovie).filter(UserMovie.user_id == user_id).all()
+
+
+def get_user_movie(db, user_id, movie_id):
+    return db.query(UserMovie).filter(UserMovie.user_id == user_id, UserMovie.movie_id == movie_id).first()
