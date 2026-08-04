@@ -10,3 +10,6 @@ def create_movie(db, title, year, category, poster_url):
 
 def get_all_movies(db):
     return db.query(Movie).all()
+
+def get_movie_by_id(db, movie_id):
+    return db.query(Movie).filter(Movie.id == movie_id).first()
