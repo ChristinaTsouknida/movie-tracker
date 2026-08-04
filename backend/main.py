@@ -6,17 +6,17 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.repositories.movie_repository import get_all_movies
 from typing import List, Optional
-from app.services.tmdb_service import search_movies as search_movie_service
-from app.services.movie_service import create_movie as create_movie_service
+from app.services.tmdb_service import search_movies_service
+from app.services.movie_service import create_movie_service
 from app.models.user import User as UserModel
-from app.services.user_service import register_user as register_user_service, login_user as login_user_service
+from app.services.user_service import register_user_service, login_user_service
 from app.schemas.movie_schema import Movie, MovieCreate, TMDBSearchResult
 from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
 from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate
-from app.services.user_movie_service import add_to_list as add_to_list_service, get_my_movies as get_my_movies_service, change_status as change_status_service
+from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service
 
 app = FastAPI()
 
@@ -40,7 +40,7 @@ def read_movies(db: Session = Depends(get_db)):
 
 @app.get("/movies/search", response_model=List[TMDBSearchResult])
 def search_movies(query: str):
-    return search_movie_service(query)
+    return search_movies_service(query)
 
 @app.get("/list", response_model=List[UserMovie])
 def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
