@@ -20,3 +20,10 @@ def update_status(db, user_movie_id, status):
     db.commit()
     db.refresh(new_status)
     return new_status
+
+
+def delete_user_movie(db, user_movie_id):
+    deleted_movie = db.query(UserMovie).filter(UserMovie.id == user_movie_id).first()
+    db.delete(deleted_movie)
+    db.commit()
+    return True
