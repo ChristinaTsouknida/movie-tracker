@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class UserMovieCreate(BaseModel):
     movie_id: int
@@ -11,4 +12,11 @@ class UserMovie(BaseModel):
     status: str
 
 class UserMovieStatusUpdate(BaseModel):
+    status: str
+
+class AddMovieFromTMDB(BaseModel):
+    tmdb_id: int
+    title: str
+    year: int
+    posterUrl: Optional[str]
     status: str
