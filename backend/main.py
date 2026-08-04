@@ -15,8 +15,8 @@ from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
-from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate
-from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service
+from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate, AddMovieFromTMDB
+from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service
 
 app = FastAPI()
 
@@ -57,12 +57,21 @@ def add_to_my_list(user_movie: UserMovieCreate, db: Session = Depends(get_db), c
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/list/from-tmdb", response_model=UserMovie)
+def add_movie_from_tmdb(movie_data: AddMovieFromTMDB, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    try:
+        return add_movie_from_tmdb_service(db, current_user.id, movie_data.tmdb_id, movie_data.title, movie_data.year, movie_data.posterUrl, movie_data.status)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.post("/register", response_model=UserResponse)
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
     try:
         return register_user_service(db, user.full_name, user.email, user.password)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.post("/login", response_model=Token)
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
