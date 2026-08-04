@@ -6,3 +6,6 @@ def create_user_movie(db, user_id, movie_id, status):
     db.commit()
     db.refresh(new_movie)
     return new_movie
+
+def get_user_movies(db, user_id):
+    return db.query(UserMovie).filter(UserMovie.user_id == user_id).all()
