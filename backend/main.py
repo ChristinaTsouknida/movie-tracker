@@ -15,8 +15,8 @@ from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
-from app.schemas.user_movie_schema import UserMovieCreate, UserMovie
-from app.services.user_movie_service import add_to_list as add_to_list_service, get_my_movies as get_my_movies_service
+from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate
+from app.services.user_movie_service import add_to_list as add_to_list_service, get_my_movies as get_my_movies_service, change_status as change_status_service
 
 app = FastAPI()
 
@@ -76,4 +76,8 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
 
+
+@app.patch("/list/{user_movie_id}", response_model=UserMovie)
+def update_movie_status(user_movie_id: int, update_data: UserMovieStatusUpdate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return change_status_service(db, user_movie_id, update_data.status)
 
