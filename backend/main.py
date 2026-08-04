@@ -16,7 +16,7 @@ from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
 from app.schemas.user_movie_schema import UserMovieCreate, UserMovie
-from app.services.user_movie_service import add_to_list as add_to_list_service
+from app.services.user_movie_service import add_to_list as add_to_list_service, get_my_movies as get_my_movies_service
 
 app = FastAPI()
 
@@ -42,10 +42,13 @@ def read_movies(db: Session = Depends(get_db)):
 def search_movies(query: str):
     return search_movie_service(query)
 
+@app.get("/list", response_model=List[UserMovie])
+def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return get_my_movies_service(db, current_user.id)
+
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
-
 
 @app.post("/list", response_model=UserMovie)
 def add_to_my_list(user_movie: UserMovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
@@ -69,3 +72,5 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
         }
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
+
+
