@@ -16,7 +16,7 @@ from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
 from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate
-from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service
+from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service
 
 app = FastAPI()
 
@@ -81,3 +81,6 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
 def update_movie_status(user_movie_id: int, update_data: UserMovieStatusUpdate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return change_status_service(db, user_movie_id, update_data.status)
 
+@app.delete("/list/{user_movie_id}")
+def delete_movie_from_list(user_movie_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    return delete_from_list_service(db, user_movie_id)
