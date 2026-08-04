@@ -52,7 +52,10 @@ def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user
 
 @app.post("/list", response_model=UserMovie)
 def add_to_my_list(user_movie: UserMovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    return add_to_list_service(db, current_user.id, user_movie.movie_id, user_movie.status)
+    try:
+        return add_to_list_service(db, current_user.id, user_movie.movie_id, user_movie.status)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/register", response_model=UserResponse)
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
