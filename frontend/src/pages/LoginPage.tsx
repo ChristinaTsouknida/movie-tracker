@@ -2,7 +2,7 @@ import {z} from 'zod';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Mail, EyeOff, Eye} from 'lucide-react';
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {useState, useEffect} from "react";
 
 
@@ -26,11 +26,37 @@ const LoginPage = () => {
     }
   });
 
+  const  navigate = useNavigate();
+
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    fetch("http://127.0.0.1:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password
+      })
+    })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Invalid email or password");
+          }
+          return res.json();
+        })
+        .then((response) => {
+          localStorage.setItem("token", response.access_token);
+          navigate("/home");
+        })
+        .catch((error) => {
+          setLoginError(error.message);
+        });
   }
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     document.title = "Login Page";
@@ -74,6 +100,9 @@ const LoginPage = () => {
                   <p className="text-mt-red text-sm mt-1">{errors.password.message}</p>
               )}
             </div>
+            {loginError && (
+                <p className="text-mt-red text-sm text-center">{loginError}</p>
+            )}
             <button
                 type="submit"
                 className="w-full bg-mt-red text-white px-4 py-2 rounded text-base">
