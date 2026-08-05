@@ -5,7 +5,7 @@ class Movie(BaseModel):
     id: int
     title: str
     year: int
-    category: str
+    category: Optional[str] = None
     posterUrl: str = Field(validation_alias="poster_url")
 
 class MovieCreate(BaseModel):
