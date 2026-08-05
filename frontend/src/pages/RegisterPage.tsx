@@ -1,7 +1,7 @@
-import {z} from "zod";
+import { z } from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {useState, useEffect} from "react";
 import {Eye, EyeOff} from "lucide-react";
 
@@ -37,11 +37,55 @@ const RegisterPage = () => {
   })
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    fetch("http://127.0.0.1:8000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        full_name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Email already exists");
+        }
+        return res.json();
+      })
+      .then(() => {
+        return fetch("http://127.0.0.1:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password
+          })
+        })
+      })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Invalid email or password");
+        }
+        return res.json();
+      })
+      .then((response) => {
+        localStorage.setItem("token", response.access_token);
+        navigate("/home");
+      })
+      .catch((error) => {
+        setRegisterError(error.message)
+    })
   }
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const [registerError, setRegisterError] = useState("");
 
   useEffect(() => {
     document.title = "Register Page";
@@ -117,6 +161,9 @@ const RegisterPage = () => {
                   <p className="text-mt-red text-sm mt-1">{errors.confirmPassword.message}</p>
               )}
             </div>
+            {registerError && (
+                <p className="text-mt-red text-sm text-center">{registerError}</p>
+            )}
             <button
                 type="submit"
                 className="w-full bg-mt-red text-white px-4 py-2 rounded text-base">
