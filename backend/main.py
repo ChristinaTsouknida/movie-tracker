@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.repositories.movie_repository import get_all_movies
 from typing import List, Optional
-from app.services.tmdb_service import search_movies_service
+from app.services.tmdb_service import search_movies_service, discover_movies_service
 from app.services.movie_service import create_movie_service
 from app.models.user import User as UserModel
 from app.services.user_service import register_user_service, login_user_service
@@ -45,6 +45,10 @@ def search_movies(query: str):
 @app.get("/list", response_model=List[UserMovie])
 def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return get_my_movies_service(db, current_user.id)
+
+@app.get("/movies/discover", response_model=List[TMDBSearchResult])
+def get_movie_by_genre(genre_id: int):
+    return discover_movies_service(genre_id)
 
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
