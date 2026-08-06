@@ -17,12 +17,14 @@ class MovieCreate(BaseModel):
 class TMDBSearchResult(BaseModel):
     tmdb_id: int = Field(validation_alias="id")
     title: str
-    year: int = Field(validation_alias="release_date")
+    year: Optional[int] = Field(validation_alias="release_date", default=None)
     posterUrl: Optional[str] = Field(validation_alias="poster_path", default=None)
 
     @field_validator("year", mode="before")
     @classmethod
     def extract_year(cls, value):
+        if not value:
+            return None
         return int(value[:4])
 
     @field_validator("posterUrl", mode="before")
