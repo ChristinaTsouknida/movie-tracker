@@ -5,6 +5,7 @@ import MyListPage from "./pages/MyListPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import AuthLayout from "./shared/layout/AuthLayout.tsx";
+import ProtectedRoute from "./shared/ProtectedRoute.tsx";
 
 function App() {
   return (
@@ -15,9 +16,11 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
           </Route>
 
-          <Route element={<Layout />}>
-            <Route path="home" element={<HomePage />} />
-            <Route path="my-list" element={<MyListPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
+              <Route path="home" element={<HomePage />} />
+              <Route path="my-list" element={<MyListPage />} />
+            </Route>
           </Route>
         </Routes>
       </>
