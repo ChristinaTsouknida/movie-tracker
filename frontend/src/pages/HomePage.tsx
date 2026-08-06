@@ -1,14 +1,27 @@
 // import {mockMovies} from "../mockData.ts";
 import MovieCard from "../components/MovieCard";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import {Search, ChevronRight, ChevronLeft} from 'lucide-react'
-import type {Movie, TMDBMovie} from "../shared/types.ts";
+import type {TMDBMovie} from "../shared/types.ts";
 
 
 const HomePage = () => {
 
   const [searchTitle, setSearchTitle] = useState("");
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [searchResults, setSearchResults] = useState<TMDBMovie[]>([]);
+
+  const debounceTimer = useRef<number | null>(null)
+
+  useEffect(() => {
+    clearTimeout(debounceTimer.current!)
+    debounceTimer.current = setTimeout(() => {
+      fetch(`http://127.0.0.1:8000/movies/search?query=${searchTitle}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setSearchResults(data)
+          })
+    }, 400)
+  }, [searchTitle]);
 
   const [categories, setCategories] = useState<{ name: string; genreId: number; movies: TMDBMovie[]; scrolled: boolean }[]>([
     { name: "Action", genreId: 28, movies: [], scrolled: false },
@@ -18,17 +31,6 @@ const HomePage = () => {
     { name: "Thriller", genreId: 53, movies: [], scrolled: false },
   ]);
 
-  const filteredMovies = movies.filter((movie) => movie.title.toLowerCase().includes(searchTitle.toLowerCase()));
-
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/movies")
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setMovies(data);
-        });
-  }, []);
 
   useEffect(() => {
     categories.forEach((category) => {
@@ -96,12 +98,13 @@ const HomePage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white" size={18} />
           </div>
           <div className="grid grid-cols-8 gap-8">
-            {filteredMovies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+            {searchResults.map((movie) => (
+                <MovieCard key={movie.tmdb_id} movie={movie} />
             ))}
           </div>
-          <div className="w-full">
-            {categories.map((category) => (
+          {searchTitle === "" && (
+            <div className="w-full">
+              {categories.map((category) => (
                 <div key={category.genreId} className="w-full mb-8">
                   <h2 className="text-white text-xl font-bold mb-4">{category.name}</h2>
                   <div className="relative">
@@ -128,8 +131,10 @@ const HomePage = () => {
                     </button>
                   </div>
                 </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
+
         </div>
       </>
   )
