@@ -106,7 +106,7 @@ const HomePage = () => {
                   <div className="relative">
                     <div id={`row-${category.genreId}`} className="flex gap-6 overflow-x-hidden">
                       {category.movies.map((movie) => (
-                          <div key={movie.tmdb_id} className="flex-shrink-0">
+                          <div key={movie.tmdb_id} className="shrink-0">
                             <MovieCard movie={movie} />
                           </div>
                       ))}
