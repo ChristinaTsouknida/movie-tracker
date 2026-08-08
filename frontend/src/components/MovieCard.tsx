@@ -1,5 +1,5 @@
 import type {MovieCardProps} from "../shared/types.ts";
-import { useState } from "react";
+import {useRef, useState, useEffect} from "react";
 import { EllipsisVertical, Check } from "lucide-react"
 
 
@@ -8,6 +8,22 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [status, setStatus] = useState<"none" | "watchlist" | "watched">("none");
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const addToWatchlist = () => {
     fetch("http://127.0.0.1:8000/list/from-tmdb", {
@@ -68,7 +84,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
               <Check size={14} className="text-white" />
             </div>
             {menuOpen && (
-                <div className="absolute top-8 right-2 bg-mt-dark-gray border border-mt-light-gray rounded-lg p-2">
+                <div ref={menuRef} className="absolute top-8 right-2 bg-mt-dark-gray border border-mt-light-gray rounded-lg p-2">
                   <button
                       type="button" className="text-xs px-2 py-1 text-white block w-full text-left hover:bg-mt-black rounded"
                       onClick={addToWatchlist}
