@@ -22,5 +22,5 @@ export interface TMDBMovie {
 }
 
 export interface MovieCardProps {
-  movie: Movie | TMDBMovie;
+  movie: TMDBMovie;
 }
