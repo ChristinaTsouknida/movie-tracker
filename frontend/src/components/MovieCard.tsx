@@ -9,6 +9,49 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
   const [status, setStatus] = useState<"none" | "watchlist" | "watched">("none");
 
+  const addToWatchlist = () => {
+    fetch("http://127.0.0.1:8000/list/from-tmdb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({
+        tmdb_id: movie.tmdb_id,
+        title: movie.title,
+        year: movie.year,
+        posterUrl: movie.posterUrl,
+        status: "watchlist"
+      })
+    })
+        .then((res) => {
+          if (res.ok) {
+            setStatus("watchlist");
+          }
+        });
+  }
+
+  const addToWatched = () => {
+    fetch("http://127.0.0.1:8000/list/from-tmdb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify({
+        tmdb_id: movie.tmdb_id,
+        title: movie.title,
+        year: movie.year,
+        posterUrl: movie.posterUrl,
+        status: "watched"
+      })
+    })
+    .then((res) => {
+      if (res.ok) {
+        setStatus("watched");
+      }
+    });
+  }
 
   return (
       <>
@@ -28,13 +71,13 @@ const MovieCard = ({ movie }: MovieCardProps) => {
                 <div className="absolute top-8 right-2 bg-mt-dark-gray border border-mt-light-gray rounded-lg p-2">
                   <button
                       type="button" className="text-xs px-2 py-1 text-white block w-full text-left hover:bg-mt-black rounded"
-                      onClick={() => setStatus(status === "watchlist" ? "none" : "watchlist")}
+                      onClick={addToWatchlist}
                   >
                     {status === "watchlist" ? "Remove from Watchlist" : "Add to Watchlist"}
                   </button>
                   <button
                       type="button" className="text-xs px-2 py-1 text-white block w-full text-left hover:bg-mt-black rounded"
-                      onClick={() => setStatus(status === "watched" ? "none" : "watched")}
+                      onClick={addToWatched}
                   >
                     {status === "watched" ? "Remove from Watched" : "Watched"}
                   </button>
