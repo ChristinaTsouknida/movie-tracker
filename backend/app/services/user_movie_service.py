@@ -31,3 +31,13 @@ def add_movie_from_tmdb_service(db, user_id, tmdb_id, title, year, poster_url, s
     else:   
         movie = create_movie(db=db, title=title, year=year, category=None, poster_url=poster_url, tmdb_id=tmdb_id)
     return add_to_list_service(db, user_id, movie.id, status)
+
+
+def get_status_service(db, user_id, tmdb_id):
+    existing_movie = get_movie_by_tmdb_id(db, tmdb_id)
+    if not existing_movie:
+        return None
+    user_movie = get_user_movie(db, user_id, existing_movie.id)
+    if user_movie:
+        return user_movie.status
+    return None
