@@ -72,10 +72,10 @@ const MovieCard = ({ movie }: MovieCardProps) => {
           status: "watchlist"
         })
       })
-          .then((res) => {
-            if (res.ok) {
-              setStatus("watchlist");
-            }
+          .then((res) => res.json())
+          .then((data) => {
+            setStatus("watchlist");
+            setUserMovieId(data.id);
           });
     }
   }
@@ -110,15 +110,28 @@ const MovieCard = ({ movie }: MovieCardProps) => {
           status: "watched"
         })
       })
-          .then((res) => {
-            if (res.ok) {
-              setStatus("watched");
-            }
+          .then((res) => res.json())
+          .then((data) => {
+            setStatus("watched");
+            setUserMovieId(data.id);
           });
       }
     }
 
-
+  const removeFromList = () => {
+    fetch(`http://127.0.0.1:8000/list/${userMovieId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+        .then((res) => {
+          if (res.ok) {
+            setStatus("none");
+            setUserMovieId(null);
+          }
+        });
+  }
 
 
   return (
@@ -139,13 +152,13 @@ const MovieCard = ({ movie }: MovieCardProps) => {
                 <div ref={menuRef} className="absolute top-8 right-2 bg-mt-dark-gray border border-mt-light-gray rounded-lg p-2">
                   <button
                       type="button" className="text-xs px-2 py-1 text-white block w-full text-left hover:bg-mt-black rounded"
-                      onClick={addToWatchlist}
+                      onClick={status === "watchlist" ? removeFromList : addToWatchlist}
                   >
                     {status === "watchlist" ? "Remove from Watchlist" : "Add to Watchlist"}
                   </button>
                   <button
                       type="button" className="text-xs px-2 py-1 text-white block w-full text-left hover:bg-mt-black rounded"
-                      onClick={addToWatched}
+                      onClick={status === "watched" ? removeFromList : addToWatched}
                   >
                     {status === "watched" ? "Remove from Watched" : "Watched"}
                   </button>
