@@ -9,6 +9,8 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
   const [status, setStatus] = useState<"none" | "watchlist" | "watched">("none");
 
+  const [userMovieId, setUserMovieId] = useState<number | null>(null);
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,49 +27,99 @@ const MovieCard = ({ movie }: MovieCardProps) => {
     };
   }, []);
 
-  const addToWatchlist = () => {
-    fetch("http://127.0.0.1:8000/list/from-tmdb", {
-      method: "POST",
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/list/status/${movie.tmdb_id}`, {
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({
-        tmdb_id: movie.tmdb_id,
-        title: movie.title,
-        year: movie.year,
-        posterUrl: movie.posterUrl,
-        status: "watchlist"
-      })
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      }
     })
-        .then((res) => {
-          if (res.ok) {
-            setStatus("watchlist");
-          }
-        });
+    .then(res => res.json())
+    .then((data) => {
+      if (data.status) {
+        setStatus(data.status)
+        setUserMovieId(data.user_movie_id);
+      }
+    })
+  }, []);
+
+  const addToWatchlist = () => {
+    if (userMovieId) {
+      fetch(`http://127.0.0.1:8000/list/${userMovieId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ status: "watchlist" })
+      })
+          .then((res) => {
+            if (res.ok) {
+              setStatus("watchlist");
+            }
+          });
+    } else {
+      fetch("http://127.0.0.1:8000/list/from-tmdb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          tmdb_id: movie.tmdb_id,
+          title: movie.title,
+          year: movie.year,
+          posterUrl: movie.posterUrl,
+          status: "watchlist"
+        })
+      })
+          .then((res) => {
+            if (res.ok) {
+              setStatus("watchlist");
+            }
+          });
+    }
   }
 
   const addToWatched = () => {
-    fetch("http://127.0.0.1:8000/list/from-tmdb", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({
-        tmdb_id: movie.tmdb_id,
-        title: movie.title,
-        year: movie.year,
-        posterUrl: movie.posterUrl,
-        status: "watched"
+    if (userMovieId) {
+      fetch(`http://127.0.0.1:8000/list/${userMovieId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ status: "watched" })
       })
-    })
-    .then((res) => {
-      if (res.ok) {
-        setStatus("watched");
+        .then((res) => {
+          if (res.ok) {
+            setStatus("watched");
+          }
+        });
+    } else {
+      fetch("http://127.0.0.1:8000/list/from-tmdb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          tmdb_id: movie.tmdb_id,
+          title: movie.title,
+          year: movie.year,
+          posterUrl: movie.posterUrl,
+          status: "watched"
+        })
+      })
+          .then((res) => {
+            if (res.ok) {
+              setStatus("watched");
+            }
+          });
       }
-    });
-  }
+    }
+
+
+
 
   return (
       <>
