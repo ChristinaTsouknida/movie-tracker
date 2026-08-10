@@ -16,7 +16,7 @@ from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
 from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate, AddMovieFromTMDB
-from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service
+from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service, get_status_service
 
 app = FastAPI()
 
@@ -49,6 +49,11 @@ def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depen
 @app.get("/movies/discover", response_model=List[TMDBSearchResult])
 def get_movie_by_genre(genre_id: int):
     return discover_movies_service(genre_id)
+
+@app.get("/list/status/{tmdb_id}")
+def get_status(tmdb_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    status = get_status_service(db, current_user.id, tmdb_id)
+    return {"status" : status}
 
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
