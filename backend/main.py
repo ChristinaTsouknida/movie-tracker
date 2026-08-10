@@ -52,8 +52,10 @@ def get_movie_by_genre(genre_id: int):
 
 @app.get("/list/status/{tmdb_id}")
 def get_status(tmdb_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    status = get_status_service(db, current_user.id, tmdb_id)
-    return {"status" : status}
+    user_movie = get_status_service(db, current_user.id, tmdb_id)
+    if user_movie:
+        return {"user_movie_id": user_movie.id, "status": user_movie.status}
+    return {"user_movie_id": None, "status": None}
 
 @app.post("/movies", response_model=Movie)
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):

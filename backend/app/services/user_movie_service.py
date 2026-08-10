@@ -39,5 +39,5 @@ def get_status_service(db, user_id, tmdb_id):
         return None
     user_movie = get_user_movie(db, user_id, existing_movie.id)
     if user_movie:
-        return user_movie.status
+        return user_movie
     return None
