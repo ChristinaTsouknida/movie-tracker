@@ -21,6 +21,16 @@ export interface TMDBMovie {
   posterUrl: string;
 }
 
-export interface MovieCardProps {
-  movie: TMDBMovie;
+export interface UserMovieWithDetails {
+  id: number;
+  status: string;
+  title: string;
+  year: number;
+  posterUrl: string;
+  tmdb_id: number | null;
 }
+
+export interface MovieCardProps {
+  movie: TMDBMovie | UserMovieWithDetails;
+}
+

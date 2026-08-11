@@ -1,13 +1,28 @@
-import {mockMovies} from "../mockData.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import {MonitorPlay, SquareCheckBig} from 'lucide-react'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
+import type {UserMovieWithDetails} from "../shared/types.ts";
 
 
 const MyListPage = ()=> {
 
-  const watchListMovies = mockMovies.filter((movie) => movie.id % 2 === 0)
-  const watchedMovies = mockMovies.filter((movie) => movie.id % 2 !== 0)
+  const [movies, setMovies] = useState<UserMovieWithDetails[]>([]);
+
+  const watchListMovies = movies.filter((movie) => movie.status === "watchlist")
+  const watchedMovies = movies.filter((movie) => movie.status === "watched")
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/list", {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      setMovies(data);
+    })
+  }, [])
+
 
   useEffect(() => {
     document.title = "My List";
