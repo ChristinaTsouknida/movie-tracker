@@ -52,6 +52,7 @@ def get_my_movies_with_details_service(db, user_id):
             "status": user_movie.status,
             "title": movie.title,
             "year": movie.year,
-            "posterUrl": movie.poster_url
+            "posterUrl": movie.poster_url,
+            "tmdb_id": movie.tmdb_id
         })
     return result

@@ -27,3 +27,4 @@ class UserMovieWithDetails(BaseModel):
     title: str
     year: int
     posterUrl: str
+    tmdb_id: Optional[int] = None
