@@ -41,3 +41,17 @@ def get_status_service(db, user_id, tmdb_id):
     if user_movie:
         return user_movie
     return None
+
+def get_my_movies_with_details_service(db, user_id):
+    user_movies = get_my_movies_service(db, user_id)
+    result = []
+    for user_movie in user_movies:
+        movie = get_movie_by_id(db, user_movie.movie_id)
+        result.append({
+            "id": user_movie.id,
+            "status": user_movie.status,
+            "title": movie.title,
+            "year": movie.year,
+            "posterUrl": movie.poster_url
+        })
+    return result
