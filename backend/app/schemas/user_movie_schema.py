@@ -20,3 +20,10 @@ class AddMovieFromTMDB(BaseModel):
     year: int
     posterUrl: Optional[str]
     status: str
+
+class UserMovieWithDetails(BaseModel):
+    id: int
+    status: str
+    title: str
+    year: int
+    posterUrl: str

@@ -15,8 +15,8 @@ from app.schemas.user_schema import UserRegister, UserResponse, UserLogin, Token
 from app.core.security import create_access_token
 from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
-from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate, AddMovieFromTMDB
-from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service, get_status_service
+from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate, AddMovieFromTMDB, UserMovieWithDetails
+from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service, get_status_service, get_my_movies_with_details_service
 
 app = FastAPI()
 
@@ -42,9 +42,9 @@ def read_movies(db: Session = Depends(get_db)):
 def search_movies(query: str):
     return search_movies_service(query)
 
-@app.get("/list", response_model=List[UserMovie])
+@app.get("/list", response_model=List[UserMovieWithDetails])
 def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    return get_my_movies_service(db, current_user.id)
+    return get_my_movies_with_details_service(db, current_user.id)
 
 @app.get("/movies/discover", response_model=List[TMDBSearchResult])
 def get_movie_by_genre(genre_id: int):
