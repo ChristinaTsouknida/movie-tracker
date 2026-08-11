@@ -7,7 +7,9 @@ const MovieCard = ({ movie }: MovieCardProps) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const [status, setStatus] = useState<"none" | "watchlist" | "watched">("none");
+  const [status, setStatus] = useState<"none" | "watchlist" | "watched">(
+      "status" in movie ? (movie.status as "none" | "watchlist" | "watched") : "none"
+  );
 
   const [userMovieId, setUserMovieId] = useState<number | null>(null);
 
@@ -28,18 +30,20 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/list/status/${movie.tmdb_id}`, {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
-      if (data.status) {
-        setStatus(data.status)
-        setUserMovieId(data.user_movie_id);
-      }
-    })
+    if (!("status" in movie)) {
+      fetch(`http://127.0.0.1:8000/list/status/${movie.tmdb_id}`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+          .then(res => res.json())
+          .then((data) => {
+            if (data.status) {
+              setStatus(data.status)
+              setUserMovieId(data.user_movie_id);
+            }
+          })
+    }
   }, []);
 
   const addToWatchlist = () => {
