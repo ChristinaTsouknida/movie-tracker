@@ -90,6 +90,8 @@ const HomePage = () => {
           <div className="relative mb-12">
             <input
                 type="text"
+                name="search"
+                id="search"
                 value={searchTitle}
                 onChange={(e) => setSearchTitle(e.target.value)}
                 placeholder="Search"
