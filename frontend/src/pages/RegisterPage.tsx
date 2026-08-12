@@ -3,14 +3,14 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Link, useNavigate} from "react-router";
 import {useState, useEffect} from "react";
-import {Eye, EyeOff} from "lucide-react";
+import PasswordInput from "../components/PasswordInput.tsx";
 
 
 const formSchema = z.object({
   email: z.email({error: "Invalid email address"}),
   password: z.string().trim().min(5, {error: "Password must be at least 5 characters"}),
-  name: z.string().min(8, {error: "Full name must be at least 8 characters"}),
-  confirmPassword: z.string().min(0, {error: "Passwords do not match"}),
+  name: z.string().min(3, {error: "Full name must be at least 8 characters"}),
+  confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"]
@@ -81,9 +81,6 @@ const RegisterPage = () => {
     })
   }
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const navigate = useNavigate();
   const [registerError, setRegisterError] = useState("");
 
@@ -132,34 +129,20 @@ const RegisterPage = () => {
             <div>
               <label className="text-white text-sm mb-1 block">Password</label>
               <div className="relative">
-                <input
-                    {...register("password")}
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password..."
-                    className="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base pr-10"
-                />
-                {showPassword? <Eye onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray cursor-pointer" size={18} />
-                    : <EyeOff onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray cursor-pointer" size={18} />}
+                <PasswordInput placeholder="Password" registration={register("password")} inputClassName="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base" />
+                {errors.password && (
+                    <p className="text-mt-red text-sm mt-1">{errors.password.message}</p>
+                )}
               </div>
-              {errors.password && (
-                  <p className="text-mt-red text-sm mt-1">{errors.password.message}</p>
-              )}
             </div>
             <div>
               <label className="text-white text-sm mb-1 block">Confirm Password</label>
               <div className="relative">
-                <input
-                    {...register("confirmPassword")}
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Enter your password again..."
-                    className="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base pr-10"
-                />
-                {showConfirmPassword? <Eye onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray cursor-pointer" size={18} />
-                    : <EyeOff onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray cursor-pointer" size={18} />}
+                <PasswordInput placeholder="Confirm your password" registration={register("confirmPassword")} inputClassName="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base" />
+                {errors.confirmPassword && (
+                    <p className="text-mt-red text-sm mt-1">{errors.confirmPassword.message}</p>
+                )}
               </div>
-              {errors.confirmPassword && (
-                  <p className="text-mt-red text-sm mt-1">{errors.confirmPassword.message}</p>
-              )}
             </div>
             {registerError && (
                 <p className="text-mt-red text-sm text-center">{registerError}</p>

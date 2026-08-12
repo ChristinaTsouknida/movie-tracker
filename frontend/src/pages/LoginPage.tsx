@@ -1,9 +1,10 @@
 import {z} from 'zod';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Mail, EyeOff, Eye} from 'lucide-react';
+import {Mail} from 'lucide-react';
 import { Link, useNavigate } from "react-router";
 import {useState, useEffect} from "react";
+import PasswordInput from "../components/PasswordInput.tsx";
 
 
 const formSchema = z.object({
@@ -54,8 +55,6 @@ const LoginPage = () => {
         });
   }
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
@@ -88,14 +87,7 @@ const LoginPage = () => {
               )}
             </div>
             <div className="relative">
-              <input
-                  {...register("password")}
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  className="w-full border rounded-full px-4 py-2.5 bg-transparent text-white text-base pr-10"
-              />
-              {showPassword ? <Eye onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray" size={18} />
-                  : <EyeOff onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray" size={18} />}
+              <PasswordInput placeholder="Password" registration={register("password")} />
               {errors.password && (
                   <p className="text-mt-red text-sm mt-1">{errors.password.message}</p>
               )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -35,3 +36,8 @@ export interface MovieCardProps {
   onRemove?: () => void;
 }
 
+export interface PasswordInputProps {
+  placeholder: string;
+  registration: UseFormRegisterReturn;
+  inputClassName?: string;
+}
