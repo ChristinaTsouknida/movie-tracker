@@ -32,5 +32,6 @@ export interface UserMovieWithDetails {
 
 export interface MovieCardProps {
   movie: TMDBMovie | UserMovieWithDetails;
+  onRemove?: () => void;
 }
 
