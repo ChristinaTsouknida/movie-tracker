@@ -11,6 +11,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   backend:
     build: ./backend
@@ -31,4 +33,7 @@ services:
       - "5173:80"
     depends_on:
       - backend
+
+volumes:
+  mysql_data:
 
