@@ -1,6 +1,6 @@
 import MovieCard from "../components/MovieCard.tsx";
 import {MonitorPlay, SquareCheckBig} from 'lucide-react'
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import type {UserMovieWithDetails} from "../shared/types.ts";
 import { ChevronRight, ChevronLeft} from "lucide-react";
 
@@ -14,6 +14,12 @@ const MyListPage = ()=> {
 
   const [watchlistScrolled, setWatchlistScrolled] = useState(false);
   const [watchedScrolled, setWatchedScrolled] = useState(false);
+
+  const [watchlistNeedsScroll, setWatchlistNeedsScroll] = useState(false);
+  const [watchedNeedsScroll, setWatchedNeedsScroll] = useState(false);
+
+  const watchlistRowRef = useRef<HTMLDivElement>(null);
+  const watchedRowRef = useRef<HTMLDivElement>(null);
 
   const handleRemove = (id: number) => {
     setMovies(movies.filter((movie) => movie.id !== id))
@@ -30,6 +36,15 @@ const MyListPage = ()=> {
       setMovies(data);
     })
   }, [])
+
+  useEffect(() => {
+    if (watchlistRowRef.current) {
+      setWatchlistNeedsScroll(watchlistRowRef.current.scrollWidth > watchlistRowRef.current.clientWidth);
+    }
+    if (watchedRowRef.current) {
+      setWatchedNeedsScroll(watchedRowRef.current.scrollWidth > watchedRowRef.current.clientWidth);
+    }
+  }, [movies]);
 
 
   useEffect(() => {
@@ -72,9 +87,9 @@ const MyListPage = ()=> {
             Watchlist
           </h2>
           <div className="relative w-full overflow-hidden">
-            <div id="row-watchlist" className="flex gap-6 overflow-x-hidden">
+            <div id="row-watchlist" ref={watchlistRowRef} className="flex gap-6 overflow-x-hidden">
               {watchListMovies.map((movie) => (
-                  <div key={movie.id} className="flex-shrink-0">
+                  <div key={movie.id} className="shrink-0">
                     <MovieCard movie={movie} onRemove={() => handleRemove(movie.id)} />
                   </div>
               ))}
@@ -87,12 +102,14 @@ const MyListPage = ()=> {
                   <ChevronLeft size={24} />
                 </button>
             )}
-            <button
-                onClick={() => scrollRow("row-watchlist")}
-                className="absolute -right-2 top-16 bg-mt-dark-gray/80 text-white rounded-full p-2"
-            >
-              <ChevronRight size={24} />
-            </button>
+            {watchlistNeedsScroll && (
+                <button
+                    onClick={() => scrollRow("row-watchlist")}
+                    className="absolute -right-2 top-16 bg-mt-dark-gray/80 text-white rounded-full p-2"
+                >
+                  <ChevronRight size={24} />
+                </button>
+            )}
           </div>
           <hr className="border border-mt-light-gray w-full mt-8"/>
           <h2 className="w-full text-left text-white text-2xl font-bold mb-4 flex items-center gap-2 mt-5">
@@ -100,9 +117,9 @@ const MyListPage = ()=> {
             Watched
           </h2>
           <div className="relative w-full overflow-hidden">
-            <div id="row-watched" className="flex gap-6 overflow-x-hidden">
+            <div id="row-watched" ref={watchedRowRef} className="flex gap-6 overflow-x-hidden">
               {watchedMovies.map((movie) => (
-                  <div key={movie.id} className="flex-shrink-0">
+                  <div key={movie.id} className="shrink-0">
                     <MovieCard movie={movie} onRemove={() => handleRemove(movie.id)} />
                   </div>
               ))}
@@ -114,11 +131,13 @@ const MyListPage = ()=> {
                   <ChevronLeft size={24} />
                 </button>
             )}
-            <button
-            onClick={() => scrollRow("row-watched")}
-            className="absolute -right-2 top-16 bg-mt-dark-gray/80 text-white rounded-full p-2">
-              <ChevronRight size={24} />
-            </button>
+            {watchedNeedsScroll && (
+                <button
+                    onClick={() => scrollRow("row-watched")}
+                    className="absolute -right-2 top-16 bg-mt-dark-gray/80 text-white rounded-full p-2">
+                  <ChevronRight size={24} />
+                </button>
+            )}
           </div>
         </div>
       </>
