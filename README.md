@@ -122,3 +122,11 @@ movie-tracker/
 │       └── shared/
 └── docker-compose.yml
 ```
+
+## API Documentation
+
+Once the backend is running, interactive API documentation (Swagger UI) is automatically available at:
+
+[http://localhost:8000/docs](http://localhost:8000/docs)
+
+This included all available endpoints, request/response schemas and the ability to test API calls directly from the browser.
