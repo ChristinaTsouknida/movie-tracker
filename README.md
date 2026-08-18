@@ -4,6 +4,15 @@ A full-stack web application for tracking movies you want to watch and have alre
 Search for movies using the TMDB API, organize them into watchlist/watched categories, and
 manage your personal movie collection
 
+## Features
+
+ - User registration and authentication (JWT)
+ - Search for movies via TMDB API
+ - Browse movies by category (Action, Comedy, Drama, Sci-Fi, Thriller)
+ - Add movies to your Watchlist or mark them as Watched
+ - View and manage your personal movie collection
+ - Remove movies from your list
+
 ## Tech Stack
 
 **Backend**
@@ -129,4 +138,4 @@ Once the backend is running, interactive API documentation (Swagger UI) is autom
 
 [http://localhost:8000/docs](http://localhost:8000/docs)
 
-This included all available endpoints, request/response schemas and the ability to test API calls directly from the browser.
+This includes all available endpoints, request/response schemas and the ability to test API calls directly from the browser.
