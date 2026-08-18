@@ -100,3 +100,25 @@ This runs the entire application (backend, frontend and MySQL database) with a s
    ```bash
    npm run dev
    ```
+
+## Project Structure
+
+```
+movie-tracker/
+├── backend/          # FastAPI backend (Python)
+│   ├── app/
+│   │   ├── controllers/   # API routes
+│   │   ├── services/      # Business logic
+│   │   ├── repositories/  # Database access
+│   │   ├── models/        # SQLAlchemy models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   └── core/           # Config, database, security
+│   ├── main.py
+│   └── requirements.txt
+├── frontend/         # React frontend (TypeScript)
+│   └── src/
+│       ├── pages/
+│       ├── components/
+│       └── shared/
+└── docker-compose.yml
+```
