@@ -13,6 +13,14 @@ manage your personal movie collection
  - View and manage your personal movie collection
  - Remove movies from your list
 
+### Movie status
+
+Each movie card has a menu (accessed via the ⋮ icon) where you can mark a movie as **Add to Watchlist** or **Watched**. A colored badge on the card indicates its current status:
+
+ - 🟡 **Yellow** — in your Watchlist
+ - 🟢 **Green** — marked as Watched
+ - ⚪ **Gray** — not yet added to your list
+
 ## Tech Stack
 
 **Backend**
