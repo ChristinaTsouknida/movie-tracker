@@ -13,6 +13,26 @@ manage your personal movie collection
  - View and manage your personal movie collection
  - Remove movies from your list
 
+## Screenshots
+
+### Login
+![Login Page](./screenshots/login.png)
+
+### Register
+![Register Page](./screenshots/register.png)
+
+### Home Page
+![Home Page](./screenshots/homepage.png)
+
+### Search
+![Search Results](./screenshots/search.png)
+
+### My List
+![My List Page](./screenshots/mylist.png)
+
+### API Documentation (Swagger)
+![Swagger UI](./screenshots/swagger.png)
+
 ### Movie status
 
 Each movie card has a menu (accessed via the ⋮ icon) where you can mark a movie as **Add to Watchlist** or **Watched**. A colored badge on the card indicates its current status:
