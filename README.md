@@ -209,3 +209,14 @@ To run the tests:
    cd backend
    pytest
    ```
+
+## Integration Testing (Postman)
+
+The `postman/` folder contains a Postman collection with integration tests covering the full authentication flow (register → login → authenticated request).
+
+To run it:
+
+1. Import `postman/movie-tracker.postman_collection.json` into Postman
+2. Create an environment (or use the collection with no environment — it uses collection variables)
+3. Ensure the backend is running at `http://127.0.0.1:8000`
+4. Run the collection using Postman's Collection Runner
