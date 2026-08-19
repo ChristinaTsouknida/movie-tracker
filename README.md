@@ -197,3 +197,15 @@ Once the backend is running, interactive API documentation (Swagger UI) is autom
 [http://localhost:8000/docs](http://localhost:8000/docs)
 
 This includes all available endpoints, request/response schemas and the ability to test API calls directly from the browser.
+
+
+## Running Tests
+
+The backend includes unit tests covering authentication logic, password security and business rules (duplicate prevention when adding movies to a list).
+
+To run the tests:
+
+   ```bash
+   cd backend
+   pytest
+   ```
