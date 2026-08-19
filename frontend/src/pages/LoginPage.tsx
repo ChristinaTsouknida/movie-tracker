@@ -79,7 +79,7 @@ const LoginPage = () => {
                   {...register("email")}
                   type="email"
                   placeholder="Email"
-                  className="w-full border rounded-full px-4 py-2.5 bg-transparent text-white text-base pr-10"
+                  className="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base pr-10"
               />
               <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-mt-light-gray" size={18} />
               {errors.email && (
@@ -87,7 +87,11 @@ const LoginPage = () => {
               )}
             </div>
             <div className="relative">
-              <PasswordInput placeholder="Password" registration={register("password")} />
+              <PasswordInput
+                  placeholder="Password"
+                  registration={register("password")}
+                  inputClassName="w-full border rounded-lg px-4 py-2.5 bg-transparent text-white text-base pr-10"
+              />
               {errors.password && (
                   <p className="text-mt-red text-sm mt-1">{errors.password.message}</p>
               )}
