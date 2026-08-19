@@ -9,10 +9,10 @@ class Movie(BaseModel):
     posterUrl: Optional[str] = Field(validation_alias="poster_url", default=None)
 
 class MovieCreate(BaseModel):
-    title: str
-    year: int
-    category: str
-    posterUrl: str
+    title: str = Field(examples=["Spider-man: No Way Home"])
+    year: int = Field(examples=[2021])
+    category: str = Field(examples=["Action"])
+    posterUrl: str = Field(examples=["https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg"])
 
 class TMDBSearchResult(BaseModel):
     tmdb_id: int = Field(validation_alias="id")

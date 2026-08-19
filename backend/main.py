@@ -30,45 +30,45 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/", tags=["General"])
 def read_root():
     return {"message": "Movie Tracker API is running"}
 
-@app.get("/movies", response_model=List[Movie])
+@app.get("/movies", response_model=List[Movie], tags=["Movies"])
 def read_movies(db: Session = Depends(get_db)):
     return get_all_movies(db)
 
-@app.get("/movies/search", response_model=List[TMDBSearchResult])
+@app.get("/movies/search", response_model=List[TMDBSearchResult], tags=["Movies"])
 def search_movies(query: str):
     return search_movies_service(query)
 
-@app.get("/list", response_model=List[UserMovieWithDetails])
+@app.get("/list", response_model=List[UserMovieWithDetails], tags=["List"])
 def get_my_movies(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return get_my_movies_with_details_service(db, current_user.id)
 
-@app.get("/movies/discover", response_model=List[TMDBSearchResult])
+@app.get("/movies/discover", response_model=List[TMDBSearchResult], tags=["Movies"])
 def get_movie_by_genre(genre_id: int):
     return discover_movies_service(genre_id)
 
-@app.get("/list/status/{tmdb_id}")
+@app.get("/list/status/{tmdb_id}", tags=["List"])
 def get_status(tmdb_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     user_movie = get_status_service(db, current_user.id, tmdb_id)
     if user_movie:
         return {"user_movie_id": user_movie.id, "status": user_movie.status}
     return {"user_movie_id": None, "status": None}
 
-@app.post("/movies", response_model=Movie)
+@app.post("/movies", response_model=Movie, tags=["Movies"])
 def create_movie(movie: MovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return create_movie_service(db, movie.title, movie.year, movie.category, movie.posterUrl)
 
-@app.post("/list", response_model=UserMovie)
+@app.post("/list", response_model=UserMovie, tags=["List"])
 def add_to_my_list(user_movie: UserMovieCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     try:
         return add_to_list_service(db, current_user.id, user_movie.movie_id, user_movie.status)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.post("/list/from-tmdb", response_model=UserMovie)
+@app.post("/list/from-tmdb", response_model=UserMovie, tags=["List"])
 def add_movie_from_tmdb(movie_data: AddMovieFromTMDB, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     try:
         return add_movie_from_tmdb_service(db, current_user.id, movie_data.tmdb_id, movie_data.title, movie_data.year, movie_data.posterUrl, movie_data.status)
@@ -76,7 +76,7 @@ def add_movie_from_tmdb(movie_data: AddMovieFromTMDB, db: Session = Depends(get_
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.post("/register", response_model=UserResponse)
+@app.post("/register", response_model=UserResponse, tags=["Auth"])
 def register_user(user: UserRegister, db: Session = Depends(get_db)):
     try:
         return register_user_service(db, user.full_name, user.email, user.password)
@@ -84,7 +84,7 @@ def register_user(user: UserRegister, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.post("/login", response_model=Token)
+@app.post("/login", response_model=Token, tags=["Auth"])
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
     try:
         logged_in_user = login_user_service(db, user.email, user.password)
@@ -97,10 +97,10 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail=str(e))
 
 
-@app.patch("/list/{user_movie_id}", response_model=UserMovie)
+@app.patch("/list/{user_movie_id}", response_model=UserMovie, tags=["List"])
 def update_movie_status(user_movie_id: int, update_data: UserMovieStatusUpdate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return change_status_service(db, user_movie_id, update_data.status)
 
-@app.delete("/list/{user_movie_id}")
+@app.delete("/list/{user_movie_id}", tags=["List"])
 def delete_movie_from_list(user_movie_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return delete_from_list_service(db, user_movie_id)

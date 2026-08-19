@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class UserRegister(BaseModel):
-    full_name: str
-    email: str
-    password: str
+    full_name: str = Field(examples=["Christina Tsouknida"])
+    email: str = Field(examples=["christina@gmail.com"])
+    password: str = Field(examples=["mypassword"])
 
 class UserResponse(BaseModel):
     id: int
@@ -12,8 +12,8 @@ class UserResponse(BaseModel):
 
 
 class UserLogin(BaseModel):
-    email: str
-    password: str
+    email: str = Field(examples=["christina@example.com"])
+    password: str = Field(examples=["mypassword"])
 
 
 class Token(BaseModel):
