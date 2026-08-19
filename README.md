@@ -140,6 +140,36 @@ movie-tracker/
 └── docker-compose.yml
 ```
 
+## Database Schema
+
+The application uses three main entities: **Users**, **Movies**, and **UserMovies** (a many-to-many join table tracking each user's watchlist/watched status per movie).
+
+```mermaid
+erDiagram
+  USERS ||--o{ USER_MOVIES : has
+  MOVIES ||--o{ USER_MOVIES : appears_in
+  USERS {
+    int id PK
+    string full_name
+    string email
+    string hashed_password
+  }
+  MOVIES {
+    int id PK
+    string title
+    int year
+    string category
+    string poster_url
+    int tmdb_id
+  }
+  USER_MOVIES {
+    int id PK
+    int user_id FK
+    int movie_id FK
+    string status
+  }
+```
+
 ## API Documentation
 
 Once the backend is running, interactive API documentation (Swagger UI) is automatically available at:
