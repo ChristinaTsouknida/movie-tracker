@@ -71,7 +71,7 @@ const LoginPage = () => {
               backgroundPosition: "center"
             }}
         />
-        <div className="relative z-10 border border-mt-light-gray rounded p-12 w-full max-w-md space-y-6 mb-2">
+        <div className="relative z-10 border border-mt-light-gray rounded p-12 w-full max-w-md space-y-6 mb-2 mx-4">
           <h1 className="text-white text-3xl font-bold text-center">Login</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="relative">

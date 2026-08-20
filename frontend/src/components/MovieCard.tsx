@@ -146,10 +146,10 @@ const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
 
   return (
       <>
-        <div className="w-40">
+        <div className="w-28 sm:w-32 md:w-36 lg:w-40">
           <div className="relative rounded-lg border border-mt-light-gray bg-mt-dark-gray">
             <div className="overflow-hidden rounded-lg h-56">
-              <img src={movie.posterUrl} alt={movie.title + " poster"}/>
+              <img className="w-full h-full object-cover" src={movie.posterUrl} alt={movie.title + " poster"}/>
             </div>
             <EllipsisVertical
                 onClick={() => setMenuOpen(!menuOpen)}

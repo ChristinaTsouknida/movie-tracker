@@ -95,11 +95,11 @@ const HomePage = () => {
                 value={searchTitle}
                 onChange={(e) => setSearchTitle(e.target.value)}
                 placeholder="Search"
-                className="relative w-100 bg-mt-dark-gray text-white border rounded-md pl-10 pr-4 py-2 focus:outline-none focus:border-mt-red"
+                className="relative w-full max-w-sm md:w-100 bg-mt-dark-gray text-white border rounded-md pl-10 pr-4 py-2 focus:outline-none focus:border-mt-red"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white" size={18} />
           </div>
-          <div className="grid grid-cols-8 gap-8">
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 md:gap-6">
             {searchResults.map((movie) => (
                 <MovieCard key={movie.tmdb_id} movie={movie} />
             ))}
@@ -107,7 +107,7 @@ const HomePage = () => {
           {searchTitle === "" && (
             <div className="w-full">
               {categories.map((category) => (
-                <div key={category.genreId} className="w-full mb-8">
+                <div key={category.genreId} className="w-full mb-2 md:mb-8">
                   <h2 className="text-white text-xl font-bold mb-4">{category.name}</h2>
                   <div className="relative">
                     <div id={`row-${category.genreId}`} className="flex gap-6 overflow-x-hidden">
