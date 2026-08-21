@@ -2,7 +2,7 @@
 
 A full-stack web application for tracking movies you want to watch and have already watched.
 Search for movies using the TMDB API, organize them into watchlist/watched categories, and
-manage your personal movie collection
+manage your personal movie collection.
 
 ## Features
 
