@@ -87,7 +87,7 @@ This runs the entire application (backend, frontend and MySQL database) with a s
    JWT_SECRET_KEY=generate_any_random_string_here
 
    # External API (Required)
-   # Get your free token at: [https://www.themoviedb.org/](https://www.themoviedb.org/) (Settings -> API -> API Read Access Token)
+   # Get your free token at: https://www.themoviedb.org (Settings -> API -> API Read Access Token)
    TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
    ```
 
