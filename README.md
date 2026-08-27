@@ -87,7 +87,7 @@ This runs the entire application (backend, frontend and MySQL database) with a s
    JWT_SECRET_KEY=generate_any_random_string_here
 
    # External API (Required)
-   # Get your free token at: [https://www.themoviedb.org/](https://www.themoviedb.org/) (Settings -> API -> API Read Access Token)
+   Get your free token at: [https://www.themoviedb.org/](https://www.themoviedb.org/) (Settings -> API -> API Read Access Token)
    TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
    ```
 
@@ -126,7 +126,7 @@ This runs the entire application (backend, frontend and MySQL database) with a s
 
 4. Start a MySQL container:
    ```bash
-   docker run --name movie-tracker-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=movie-tracker -p 3306:3306 -d mysql:8.0
+   docker run --name movie-tracker-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=movie_tracker -p 3306:3306 -d mysql:8.0
    ```
    
 5. Run the backend:
