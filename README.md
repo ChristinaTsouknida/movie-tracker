@@ -79,15 +79,17 @@ This runs the entire application (backend, frontend and MySQL database) with a s
 
 2. Create a `.env` file in the root directory and add the following:
 
-### Database & Auth (Choose your own values)
-MYSQL_ROOT_PASSWORD=your_custom_mysql_password
-MYSQL_DATABASE=movie_tracker
-DATABASE_URL=mysql+pymysql://root:your_custom_mysql_password@mysql:3306/movie_tracker
-JWT_SECRET_KEY=generate_any_random_string_here
+   ```env
+   # Database & Auth (Choose your own values)
+   MYSQL_ROOT_PASSWORD=your_custom_mysql_password
+   MYSQL_DATABASE=movie_tracker
+   DATABASE_URL=mysql+pymysql://root:your_custom_mysql_password@mysql:3306/movie_tracker
+   JWT_SECRET_KEY=generate_any_random_string_here
 
-### External API (Required)
-Get your free token at: https://www.themoviedb.org/ (Settings -> API -> API Read Access Token)
-TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
+   # External API (Required)
+   # Get your free token at: [https://www.themoviedb.org/](https://www.themoviedb.org/) (Settings -> API -> API Read Access Token)
+   TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
+   ```
 
 3. Build and start all services
    ```bash   
@@ -115,10 +117,12 @@ TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
    pip install -r requirements.txt
    ```
    
-3. Create a ```.env``` file in the ```/backend``` folder:
+3. Create a `.env` file in the `/backend` folder:
+   ```env
    DATABASE_URL=mysql+pymysql://root:root@localhost:3306/movie_tracker
-   TMDB_READ_ACCESS_TOKEN=your_tmdb_token
-   JWT_SECRET_KEY=your_secret_key
+   TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
+   JWT_SECRET_KEY=generate_any_random_string_here
+   ```
 
 4. Start a MySQL container:
    ```bash
