@@ -79,7 +79,8 @@ This runs the entire application (backend, frontend and MySQL database) with a s
 
 2. Create a `.env` file in the root directory and add the following:
 
-   Get your free token at: https://www.themoviedb.org (Settings -> API -> API Read Access Token)
+   Register for a free account at: https://www.themoviedb.org, navigate to your account settings to request a developer API key
+   and copy your generated API Read Access Token into your `.env` file as `TMDB_READ_ACCESS_TOKEN`.
 
    ```env
    MYSQL_ROOT_PASSWORD=your_custom_mysql_password
@@ -89,12 +90,12 @@ This runs the entire application (backend, frontend and MySQL database) with a s
    TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
    ```
 
-3. Build and start all services
+4. Build and start all services
    ```bash   
    docker compose up --build
    ```
 
-4. Once running, access:
+5. Once running, access:
  - Frontend: [http://localhost:5173](http://localhost:5173)
  - Backend API: [http://localhost:8000](http://localhost:8000)
  - Swagger docs: [http://localhost:8000/docs](http://localhost:8000/docs)
