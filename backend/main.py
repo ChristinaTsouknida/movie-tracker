@@ -17,10 +17,25 @@ from app.core.deps import get_current_user
 from app.models.user_movie import UserMovie as UserMovieModel
 from app.schemas.user_movie_schema import UserMovieCreate, UserMovie, UserMovieStatusUpdate, AddMovieFromTMDB, UserMovieWithDetails
 from app.services.user_movie_service import add_to_list_service, get_my_movies_service, change_status_service, delete_from_list_service, add_movie_from_tmdb_service, get_status_service, get_my_movies_with_details_service
+import time
+from sqlalchemy.exc import OperationalError
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+from sqlalchemy.exc import OperationalError
+import time
+
+max_tries = 5
+for attempt in range(max_tries):  
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Successful connection to MySQL!") 
+        break
+    except OperationalError:
+        if attempt == max_tries - 1:
+            raise
+        print(f"MySQL is initializing... retrying ({attempt + 1}/{max_tries})")
+        time.sleep(3)
 
 app.add_middleware(
     CORSMiddleware,
