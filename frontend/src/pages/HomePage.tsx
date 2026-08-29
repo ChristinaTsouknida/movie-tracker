@@ -87,7 +87,7 @@ const HomePage = () => {
             }}
         />
         <div className="relative z-10 flex flex-col items-center w-full self-start mt-20">
-          <div className="relative mb-12">
+          <div className="relative mb-4">
             <input
                 type="text"
                 name="search"
@@ -107,8 +107,8 @@ const HomePage = () => {
           {searchTitle === "" && (
             <div className="w-full">
               {categories.map((category) => (
-                <div key={category.genreId} className="w-full mb-2 md:mb-8">
-                  <h2 className="text-white text-xl font-bold mb-4">{category.name}</h2>
+                <div key={category.genreId} className="w-full mb-4 md:mb-2">
+                  <h2 className="text-white text-xl font-bold mb-2">{category.name}</h2>
                   <div className="relative">
                     <div id={`row-${category.genreId}`} className="flex gap-6 overflow-x-hidden">
                       {category.movies.map((movie) => (
