@@ -3,7 +3,7 @@ import {useRef, useState, useEffect} from "react";
 import { EllipsisVertical, Check } from "lucide-react"
 
 
-const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
+const MovieCard = ({ movie, onRemove, onStatusChange }: MovieCardProps) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -62,6 +62,8 @@ const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
           .then((res) => {
             if (res.ok) {
               setStatus("watchlist");
+              setMenuOpen(false);
+              if (onStatusChange) onStatusChange("watchlist");
             }
           });
     } else {
@@ -83,6 +85,8 @@ const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
           .then((data) => {
             setStatus("watchlist");
             setUserMovieId(data.id);
+            setMenuOpen(false);
+            if (onStatusChange) onStatusChange("watchlist");
           });
     }
   }
@@ -100,6 +104,8 @@ const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
         .then((res) => {
           if (res.ok) {
             setStatus("watched");
+            setMenuOpen(false);
+            if (onStatusChange) onStatusChange("watched");
           }
         });
     } else {
@@ -121,6 +127,8 @@ const MovieCard = ({ movie, onRemove }: MovieCardProps) => {
           .then((data) => {
             setStatus("watched");
             setUserMovieId(data.id);
+            setMenuOpen(false);
+            if (onStatusChange) onStatusChange("watched");
           });
       }
     }

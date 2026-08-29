@@ -25,6 +25,14 @@ const MyListPage = ()=> {
     setMovies(movies.filter((movie) => movie.id !== id))
   }
 
+  const handleStatusChange = (movieId: number, newStatus: "watchlist" | "watched") => {
+    setMovies(prevMovies =>
+        prevMovies.map(movie =>
+            movie.id === movieId ? { ...movie, status: newStatus } : movie
+        )
+    );
+  };
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/list", {
       headers: {
@@ -90,7 +98,10 @@ const MyListPage = ()=> {
             <div id="row-watchlist" ref={watchlistRowRef} className="flex gap-6 overflow-x-hidden">
               {watchListMovies.map((movie) => (
                   <div key={movie.id} className="shrink-0">
-                    <MovieCard movie={movie} onRemove={() => handleRemove(movie.id)} />
+                    <MovieCard movie={movie}
+                               onRemove={() => handleRemove(movie.id)}
+                               onStatusChange={(newStatus) => handleStatusChange(movie.id, newStatus)}
+                    />
                   </div>
               ))}
             </div>
@@ -120,7 +131,10 @@ const MyListPage = ()=> {
             <div id="row-watched" ref={watchedRowRef} className="flex gap-6 overflow-x-hidden">
               {watchedMovies.map((movie) => (
                   <div key={movie.id} className="shrink-0">
-                    <MovieCard movie={movie} onRemove={() => handleRemove(movie.id)} />
+                    <MovieCard movie={movie}
+                               onRemove={() => handleRemove(movie.id)}
+                               onStatusChange={(newStatus) => handleStatusChange(movie.id, newStatus)}
+                    />
                   </div>
               ))}
             </div>
