@@ -90,12 +90,12 @@ This runs the entire application (backend, frontend and MySQL database) with a s
    TMDB_READ_ACCESS_TOKEN=your_actual_tmdb_v4_token
    ```
 
-4. Build and start all services
+3. Build and start all services
    ```bash   
    docker compose up --build
    ```
 
-5. Once running, access:
+4. Once running, access:
  - Frontend: [http://localhost:5173](http://localhost:5173)
  - Backend API: [http://localhost:8000](http://localhost:8000)
  - Swagger docs: [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -197,6 +197,40 @@ erDiagram
     string status
   }
 ```
+
+### Useful Database Queries
+
+You can use the following SQL queries to inspect the database and verify relationships between tables:
+
+1. View all user, their saved movies and current watch status:
+   ```
+   SELECT users.full_name,
+          movies.title,
+          user_movies.status 
+   FROM user_movies 
+   JOIN movies ON user_movies.movie_id = movies.id 
+   JOIN users ON user_movies.user_id = users.id;
+   ```
+
+2. Filter movies by specific watch status (watched  or watchlist):
+   ```
+   SELECT users.full_name,
+          movies.title, 
+          user_movies.status 
+   FROM user_movies
+   JOIN movies ON user_movies.movie_id = movies.id
+   JOIN users ON user_movies.user_id = users.id 
+   WHERE user_movies.status = 'watched';
+   ```
+3. Count total saved movies per user:
+   ```
+   SELECT 
+       users.full_name, 
+       COUNT(user_movies.id) AS total_movies 
+   FROM users 
+   LEFT JOIN user_movies ON users.id = user_movies.user_id 
+   GROUP BY users.id, users.full_name;
+   ```
 
 ## API Documentation
 
